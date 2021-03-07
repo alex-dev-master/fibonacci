@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/alex-dev-master/fibonacci.git/intrernal/app"
+)
 
-const configPath = "configs/main"
 
 func main() {
+	app.Run()
 	fmt.Println("Hello!")
 }

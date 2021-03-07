@@ -14,7 +14,7 @@ func NewFibonacciService() *FibonacciService {
 }
 
 func (i *FibonacciService) GetSlice(data model.Fibonacci) ([]uint64, error) {
-	res, err := math.NewFibonacciService().GetSlice(data.X, data.Y)
+	res, err := math.NewMathematicsLibrary().GetSlice(data.X, data.Y)
 	if err != nil {
 		return nil, err
 	}

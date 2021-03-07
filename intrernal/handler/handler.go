@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/alex-dev-master/fibonacci.git/intrernal/service"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type Handler struct {
@@ -21,11 +20,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		api.GET("/get-fibonacci", h.getFibonacci)
 
-		api.GET("/test", func(context *gin.Context) {
-			context.JSON(http.StatusOK, map[string]interface{}{
-				"test": "norm",
-			})
-		})
 	}
 
 	return router

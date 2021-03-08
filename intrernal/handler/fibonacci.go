@@ -7,11 +7,16 @@ import (
 	"net/http"
 )
 
-func (h *Handler) getFibonacci(c *gin.Context)  {
+func (h *Handler) getFibonacci(c *gin.Context) {
 	var input model.Fibonacci
 
 	if err := c.Bind(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, "invalid input body")
+		return
+	}
+
+	ok := validateInputFibonacci(input, c)
+	if !ok {
 		return
 	}
 
@@ -22,4 +27,14 @@ func (h *Handler) getFibonacci(c *gin.Context)  {
 	}
 
 	c.JSON(http.StatusOK, result)
+}
+
+func validateInputFibonacci(input model.Fibonacci, c *gin.Context) bool {
+	ok := true
+	if input.Y <= input.X {
+		utils.NewErrorResponse(c, http.StatusBadRequest, "Y should have more than X")
+		ok = false
+	}
+
+	return ok
 }

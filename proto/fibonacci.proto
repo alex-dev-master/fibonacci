@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "github.com/alex-dev-master/fibonacci.git/proto";
+
+package proto;
+
+
+service Fibonacci {
+  rpc FibonacciSlice (FibonacciSliceRequest) returns (FibonacciSliceResponse) {}
+}
+
+message FibonacciSliceRequest {
+  uint64 x = 1;
+  uint64 y = 2;
+}
+
+message FibonacciSliceResponse {
+  repeated uint64 res = 1;
+}

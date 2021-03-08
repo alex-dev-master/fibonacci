@@ -27,10 +27,17 @@ func Run()  {
 	handlers := handler.NewHandler(services)
 
 	srv := new(server.Bootstrap)
+	srvGrpc := new(server.BootstrapGrpc)
 
 	go func () {
 		if err := srv.Run(viper.GetString("http.port"), handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while running http server: %s", err.Error())
+		}
+	}()
+
+	go func() {
+		if err := srvGrpc.RunRpc(); err != nil {
+			logrus.Fatalf("error occured while running grpc server: %s", err.Error())
 		}
 	}()
 
@@ -40,12 +47,13 @@ func Run()  {
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 	<- quit
 
-	logrus.Print("Chat Shutting Down")
+	logrus.Print("App Shutting Down")
 
 	if err := srv.Shutdown(context.Background()); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())
 	}
 
+	srvGrpc.Shutdown()
 
 }
 

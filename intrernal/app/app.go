@@ -5,7 +5,6 @@ import (
 	"github.com/alex-dev-master/fibonacci.git/intrernal/handler"
 	"github.com/alex-dev-master/fibonacci.git/intrernal/server"
 	"github.com/alex-dev-master/fibonacci.git/intrernal/service"
-	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -52,7 +51,7 @@ func Run() {
 
 	srvGrpc.Shutdown()
 
-	if err := srv.Shutdown(ctx); err != nil {
+	if err := srv.Shutdown(context.Background()); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())
 	}
 

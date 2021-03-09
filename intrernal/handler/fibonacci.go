@@ -34,6 +34,9 @@ func validateInputFibonacci(input model.Fibonacci, c *gin.Context) bool {
 	if input.Y <= input.X {
 		utils.NewErrorResponse(c, http.StatusBadRequest, "Y should have more than X")
 		ok = false
+	} else if input.X > 92 || input.Y > 92 {
+		utils.NewErrorResponse(c, http.StatusBadRequest, "Y and X must be less than 92")
+		ok = false
 	}
 
 	return ok

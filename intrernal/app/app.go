@@ -36,7 +36,7 @@ func Run()  {
 	}()
 
 	go func() {
-		if err := srvGrpc.RunRpc(); err != nil {
+		if err := srvGrpc.RunRpc(services); err != nil {
 			logrus.Fatalf("error occured while running grpc server: %s", err.Error())
 		}
 	}()
@@ -49,11 +49,12 @@ func Run()  {
 
 	logrus.Print("App Shutting Down")
 
+	srvGrpc.Shutdown()
+
 	if err := srv.Shutdown(context.Background()); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())
 	}
 
-	srvGrpc.Shutdown()
 
 }
 

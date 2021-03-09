@@ -1,5 +1,7 @@
 package math
 
+import "fmt"
+
 type FibonacciService struct {
 }
 
@@ -15,14 +17,32 @@ func (receiver *FibonacciService) GetSlice(offset uint64, limit uint64) ([]uint6
 
 type calcFibonacciFunc func(uint64) uint64
 
+var cache = make(map[uint64]uint64, 0)
+
 func calcFibonacciSlice(calcFibonacci calcFibonacciFunc, a, b uint64) []uint64 {
 	length := b - a + 1
 	slice := make([]uint64, length)
 	j := 0
 	for i := a; i <= b; i++ {
-		slice[j] = calcFibonacci(i)
+		if cache[i] != 0 {
+			slice[j] = cache[i]
+		} else {
+			switch i {
+			case 0:
+				slice[j] = 0
+			case 1:
+				slice[j] = 1
+			default:
+				res := calcFibonacci(i)
+				slice[j] = res
+				cache[i] = res
+			}
+		}
+
 		j++
 	}
+	//fmt.Printf("%v", cache)
+	fmt.Println(cache)
 	return slice
 }
 

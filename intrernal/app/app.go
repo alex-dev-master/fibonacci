@@ -5,6 +5,7 @@ import (
 	"github.com/alex-dev-master/fibonacci.git/intrernal/handler"
 	"github.com/alex-dev-master/fibonacci.git/intrernal/server"
 	"github.com/alex-dev-master/fibonacci.git/intrernal/service"
+	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -13,7 +14,7 @@ import (
 	"syscall"
 )
 
-func Run()  {
+func Run() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 	if err := initConfig(); err != nil {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
@@ -29,7 +30,7 @@ func Run()  {
 	srv := new(server.Bootstrap)
 	srvGrpc := new(server.BootstrapGrpc)
 
-	go func () {
+	go func() {
 		if err := srv.Run(viper.GetString("http.port"), handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while running http server: %s", err.Error())
 		}
@@ -45,16 +46,15 @@ func Run()  {
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
-	<- quit
+	<-quit
 
 	logrus.Print("App Shutting Down")
 
 	srvGrpc.Shutdown()
 
-	if err := srv.Shutdown(context.Background()); err != nil {
+	if err := srv.Shutdown(ctx); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())
 	}
-
 
 }
 

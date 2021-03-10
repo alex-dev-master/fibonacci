@@ -5,6 +5,7 @@ import (
 	"github.com/alex-dev-master/fibonacci.git/intrernal/handler"
 	"github.com/alex-dev-master/fibonacci.git/intrernal/server"
 	"github.com/alex-dev-master/fibonacci.git/intrernal/service"
+	"github.com/alex-dev-master/fibonacci.git/pkg/cache"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -23,7 +24,10 @@ func Run() {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
 
-	services := service.NewService()
+	ctx := context.Background()
+
+	rdbCache := cache.NewRedis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"), os.Getenv("REDIS_PASS"), 0, ctx).RunRedis()
+	services := service.NewService(rdbCache)
 	handlers := handler.NewHandler(services)
 
 	srv := new(server.Bootstrap)
@@ -51,7 +55,7 @@ func Run() {
 
 	srvGrpc.Shutdown()
 
-	if err := srv.Shutdown(context.Background()); err != nil {
+	if err := srv.Shutdown(ctx); err != nil {
 		logrus.Errorf("error occured on server shutting down: %s", err.Error())
 	}
 

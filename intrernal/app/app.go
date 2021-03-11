@@ -26,7 +26,10 @@ func Run() {
 
 	ctx := context.Background()
 
-	rdbCache := cache.NewRedis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"), os.Getenv("REDIS_PASS"), 0, ctx).RunRedis()
+	//rdbCache := cache.NewRedis(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"), os.Getenv("REDIS_PASS"), 0, ctx).RunRedis()
+	rdbConfig := cache.NewRedisConfig(os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"), os.Getenv("REDIS_PASS"), 0)
+	rdbService := rdbConfig.RunRedis()
+	rdbCache := cache.NewActions(rdbService, ctx)
 	services := service.NewService(rdbCache)
 	handlers := handler.NewHandler(services)
 

@@ -7,10 +7,10 @@ import (
 )
 
 type FibonacciService struct {
-	rdbCache *cache2.Client
+	rdbCache *cache2.Store
 }
 
-func NewFibonacciService(rdbCache *cache2.Client) *FibonacciService {
+func NewFibonacciService(rdbCache *cache2.Store) *FibonacciService {
 	return &FibonacciService{
 		rdbCache: rdbCache,
 	}
@@ -24,7 +24,7 @@ func (receiver *FibonacciService) GetSlice(offset uint64, limit uint64) ([]uint6
 
 type calcFibonacciFunc func(uint64) uint64
 
-func calcFibonacciSlice(calcFibonacci calcFibonacciFunc, a, b uint64, rdbCache *cache2.Client) []uint64 {
+func calcFibonacciSlice(calcFibonacci calcFibonacciFunc, a, b uint64, rdbCache *cache2.Store) []uint64 {
 	length := b - a + 1
 	slice := make([]uint64, length)
 	j := 0

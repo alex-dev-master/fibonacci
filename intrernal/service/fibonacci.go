@@ -7,10 +7,10 @@ import (
 )
 
 type FibonacciService struct {
-	rdbCache *cache.Client
+	rdbCache *cache.Store
 }
 
-func NewFibonacciService(rdbCache *cache.Client) *FibonacciService {
+func NewFibonacciService(rdbCache *cache.Store) *FibonacciService {
 	return &FibonacciService{rdbCache}
 }
 

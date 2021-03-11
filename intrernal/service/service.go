@@ -15,7 +15,7 @@ type Service struct {
 	Fibonacci
 }
 
-func NewService(rdbCache *cache.Client) *Service {
+func NewService(rdbCache *cache.Store) *Service {
 	return &Service{
 		Fibonacci: NewFibonacciService(rdbCache),
 	}

@@ -5,6 +5,8 @@ import (
 	"github.com/alex-dev-master/fibonacci.git/pkg/cache"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type Fibonacci interface {
 	GetSlice(data model.Fibonacci) ([]uint64, error)
 }

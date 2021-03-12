@@ -17,7 +17,7 @@ func NewFibonacciService(rdbCache *cache2.Store) *FibonacciService {
 }
 
 func (receiver *FibonacciService) GetSlice(offset uint64, limit uint64) ([]uint64, error) {
-	res := calcFibonacciSlice(calcFibonacci, offset, limit, receiver.rdbCache)
+	res := calcFibonacciSlice(CalcFibonacci, offset, limit, receiver.rdbCache)
 
 	return res, nil
 }
@@ -43,7 +43,7 @@ func calcFibonacciSlice(calcFibonacci calcFibonacciFunc, a, b uint64, rdbCache *
 	return slice
 }
 
-func calcFibonacci(n uint64) uint64 {
+func CalcFibonacci(n uint64) uint64 {
 	g := (1 + math.Sqrt(5)) / 2
 	ret := (math.Pow(g, float64(n)) - math.Pow(1-g, float64(n))) / math.Sqrt(5)
 	return uint64(ret)
